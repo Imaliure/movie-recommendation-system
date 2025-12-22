@@ -14,13 +14,20 @@ async function loadFavorites() {
         const m = await res.json();
         html += `
             <div class="movie-card">
-                <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'" onerror="this.src='no-image.png';">
-                <div class="movie-info">
-                    <div class="movie-title">${m.title}</div>
-                    <button class="btn btn-outline-danger btn-sm" onclick="removeFavorite(${m.id})">
-                        <i class="fas fa-trash"></i> Kaldır
-                    </button>
-            </div>
+        <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'" style="cursor:pointer">
+        <div class="movie-info">
+            <div class="movie-title">${m.title}</div>
+            <button class="btn fav-btn remove" 
+                onclick="removeFavorite(${m.id})" 
+                onmouseover="this.style.backgroundColor='#ff4d4d'; this.style.color='white'; this.style.borderColor='#ff4d4d'" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ff4d4d'; this.style.borderColor='#ff4d4d'"
+                onmousedown="this.style.backgroundColor='#b30000'"
+                onmouseup="this.style.backgroundColor='#ff4d4d'"
+                style="padding: 5px; font-size: 0.8rem; border: 1px solid #ff4d4d; color: #ff4d4d; background: transparent; transition: 0.3s; width: 100%;">
+                <i class="fas fa-trash"></i> Kaldır
+            </button>
+        </div>
+    </div>
         `;
     }
     listDiv.innerHTML = html;
