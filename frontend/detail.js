@@ -28,23 +28,49 @@ async function loadMovieDetail() {
             </div>
         </div>
     `;
-    loadSimilarMovies(movie.genres[0]);
+
+    // 🔥 DEĞİŞEN TEK SATIR
+    loadSimilarMovies(movie.genres);
 }
 
-async function loadSimilarMovies(genre) {
-    const res = await fetch(`${API_URL}/genre/${genre}`);
-    const data = await res.json();
-    const html = data.data
-        .filter(m => m.id != movieId)
+async function loadSimilarMovies(genres) {
+    let allMovies = [];
+
+    // Her genre için backend’den film çek
+    for (let g of genres) {
+        const res = await fetch(`${API_URL}/genre/${encodeURIComponent(g)}`);
+        const data = await res.json();
+        allMovies.push(...data.data);
+    }
+
+    // Aynı filmleri birleştir + kaç kez eşleştiğini say
+    const scoreMap = {};
+
+    for (let m of allMovies) {
+        if (m.id == movieId) continue;
+
+        if (!scoreMap[m.id]) {
+            scoreMap[m.id] = { movie: m, score: 1 };
+        } else {
+            scoreMap[m.id].score++;
+        }
+    }
+
+    // Benzerlik skoruna göre sırala
+    const sorted = Object.values(scoreMap)
+        .sort((a, b) => b.score - a.score)
         .slice(0, 6)
-        .map(m => `
-            <div class="movie-card" onclick="location.href='detail.html?id=${m.id}'">
-                <img src="${m.poster}" onerror="this.src='no-image.png';">
-                <div class="movie-info">
-                    <div class="movie-title">${m.title}</div>
-                </div>
+        .map(item => item.movie);
+
+    const html = sorted.map(m => `
+        <div class="movie-card" onclick="location.href='detail.html?id=${m.id}'">
+            <img src="${m.poster}" onerror="this.src='no-image.png';">
+            <div class="movie-info">
+                <div class="movie-title">${m.title}</div>
             </div>
-        `).join('');
+        </div>
+    `).join('');
+
     document.getElementById("similar-movies").innerHTML = html;
 }
 
