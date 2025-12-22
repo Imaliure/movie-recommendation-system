@@ -125,6 +125,6 @@ Backend, **Render** ücretsiz planı üzerinde çalışmaktadır. Bu nedenle:
 
 ## 👤 Geliştirici
 **Movie Recommendation System**
+
 *Frontend & Backend geliştirme*  
 *FastAPI • JavaScript • Render • Vercel*
-```
