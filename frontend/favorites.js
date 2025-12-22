@@ -17,7 +17,7 @@ async function loadFavorites() {
                 <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'">
                 <div class="movie-info">
                     <div class="movie-title">${m.title}</div>
-                    <button class="btn fav-btn remove" onclick="removeFavorite(${m.id})" style="padding: 5px; font-size: 0.8rem;">
+                    <button class="btn btn-outline-danger btn-sm" onclick="removeFavorite(${m.id})" style="padding: 5px; font-size: 0.8rem;">
                         <i class="fas fa-trash"></i> Kaldır
                     </button>
                 </div>
