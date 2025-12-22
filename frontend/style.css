@@ -248,3 +248,20 @@ h2 {
         width: 100%;
     }
 }
+
+.fav-btn.remove {
+    background-color: #6c757d; /* normal (gri) */
+    color: white;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.fav-btn.remove:hover {
+    background-color: #dc3545; /* kırmızı */
+    transform: scale(1.05);
+}
+
+.fav-btn.remove:active {
+    background-color: #b02a37; /* daha koyu kırmızı */
+    transform: scale(0.98);
+}
