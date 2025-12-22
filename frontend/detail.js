@@ -29,7 +29,6 @@ async function loadMovieDetail() {
         </div>
     `;
 
-    // 🔥 DEĞİŞEN TEK SATIR
     loadSimilarMovies(movie.genres);
 }
 
@@ -43,7 +42,7 @@ async function loadSimilarMovies(genres) {
         allMovies.push(...data.data);
     }
 
-    // Aynı filmleri birleştir + kaç kez eşleştiğini say
+    // Aynı filmleri birleştir + benzerlik skorunu hesapla
     const scoreMap = {};
 
     for (let m of allMovies) {
@@ -56,13 +55,19 @@ async function loadSimilarMovies(genres) {
         }
     }
 
-    // Benzerlik skoruna göre sırala
-    const sorted = Object.values(scoreMap)
+    // 🔥 1️⃣ Benzerlik skoruna göre sırala
+    const sortedByScore = Object.values(scoreMap)
         .sort((a, b) => b.score - a.score)
-        .slice(0, 6)
         .map(item => item.movie);
 
-    const html = sorted.map(m => `
+    // 🔥 2️⃣ İlk 15 filmi al
+    const top15 = sortedByScore.slice(0, 15);
+
+    // 🔥 3️⃣ Bu 15 içinden rastgele 6 seç
+    const shuffled = top15.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 6);
+
+    const html = selected.map(m => `
         <div class="movie-card" onclick="location.href='detail.html?id=${m.id}'">
             <img src="${m.poster}" onerror="this.src='no-image.png';">
             <div class="movie-info">
