@@ -57,9 +57,9 @@ async function loadSimilarMovies(genres) {
         .sort((a, b) => b.score - a.score)
         .map(item => item.movie);
 
-    const top15 = sortedByScore.slice(0, 15);
+    const top15 = sortedByScore.slice(0, 20);
     const shuffled = top15.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 6);
+    const selected = shuffled.slice(0, 10);
 
     const html = selected.map(m => `
         <div class="movie-card" onclick="location.href='detail.html?id=${m.id}'">
