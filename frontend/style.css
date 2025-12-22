@@ -248,3 +248,26 @@ h2 {
         width: 100%;
     }
 }
+
+/* Başlangıç hali: Şeffaf arka plan, kırmızı çerçeve ve yazı */
+.btn-outline-danger {
+    background-color: transparent;
+    color: #dc3545; /* Bootstrap tehlike kırmızısı */
+    border: 1px solid #dc3545;
+    transition: all 0.3s ease; /* Geçişin yumuşak olması için */
+    cursor: pointer;
+}
+
+/* Üzerine gelindiğinde (Hover): Arka plan kırmızı, yazı beyaz olur */
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); /* Hafif bir parlama efekti */
+}
+
+/* Tıklandığında (Active): Biraz daha koyu kırmızı olur */
+.btn-outline-danger:active {
+    background-color: #a71d2a;
+    border-color: #a71d2a;
+    transform: scale(0.95); /* Tıklanma hissi için hafif küçülme */
+}

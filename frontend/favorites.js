@@ -14,13 +14,12 @@ async function loadFavorites() {
         const m = await res.json();
         html += `
             <div class="movie-card">
-                <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'">
+                <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'" onerror="this.src='no-image.png';">
                 <div class="movie-info">
                     <div class="movie-title">${m.title}</div>
-                    <button class="btn btn-outline-danger btn-sm" onclick="removeFavorite(${m.id})" style="padding: 5px; font-size: 0.8rem;">
+                    <button class="btn btn-outline-danger btn-sm" onclick="removeFavorite(${m.id})">
                         <i class="fas fa-trash"></i> Kaldır
                     </button>
-                </div>
             </div>
         `;
     }
