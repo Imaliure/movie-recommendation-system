@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://movie-recommendation-system-1-9dq3.onrender.com";
 
 async function getMovies() {
     try {
