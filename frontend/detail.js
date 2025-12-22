@@ -35,14 +35,12 @@ async function loadMovieDetail() {
 async function loadSimilarMovies(genres) {
     let allMovies = [];
 
-    // Her genre için backend’den film çek
     for (let g of genres) {
         const res = await fetch(`${API_URL}/genre/${encodeURIComponent(g)}`);
         const data = await res.json();
         allMovies.push(...data.data);
     }
 
-    // Aynı filmleri birleştir + benzerlik skorunu hesapla
     const scoreMap = {};
 
     for (let m of allMovies) {
@@ -55,15 +53,11 @@ async function loadSimilarMovies(genres) {
         }
     }
 
-    // 🔥 1️⃣ Benzerlik skoruna göre sırala
     const sortedByScore = Object.values(scoreMap)
         .sort((a, b) => b.score - a.score)
         .map(item => item.movie);
 
-    // 🔥 2️⃣ İlk 15 filmi al
     const top15 = sortedByScore.slice(0, 15);
-
-    // 🔥 3️⃣ Bu 15 içinden rastgele 6 seç
     const shuffled = top15.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 6);
 
@@ -79,6 +73,20 @@ async function loadSimilarMovies(genres) {
     document.getElementById("similar-movies").innerHTML = html;
 }
 
+// ✅ SADECE BUTONU GÜNCELLER
+function updateFavoriteButton() {
+    const isFav = favorites.includes(Number(movieId));
+    const btn = document.querySelector(".fav-btn");
+
+    if (!btn) return;
+
+    btn.classList.toggle("remove", isFav);
+    btn.innerHTML = `
+        <i class="fas ${isFav ? 'fa-heart-broken' : 'fa-heart'}"></i>
+        ${isFav ? "Favorilerden Çıkar" : "Favorilere Ekle"}
+    `;
+}
+
 function toggleFavorite(id) {
     if (favorites.includes(id)) {
         favorites = favorites.filter(f => f !== id);
@@ -86,7 +94,8 @@ function toggleFavorite(id) {
         favorites.push(id);
     }
     localStorage.setItem("favorites", JSON.stringify(favorites));
-    loadMovieDetail();
+
+    updateFavoriteButton(); // 🔥 ARTIK BENZERLER DEĞİŞMEZ
 }
 
 loadMovieDetail();
