@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://movie-recommendation-system-1-9dq3.onrender.com";
 let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 
 async function loadFavorites() {
