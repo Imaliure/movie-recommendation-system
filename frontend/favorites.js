@@ -14,7 +14,7 @@ async function loadFavorites() {
         const m = await res.json();
         html += `
             <div class="movie-card">
-        <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'" style="cursor:pointer">
+        <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'" style="cursor:pointer" onerror="this.src='no-image.png';">
         <div class="movie-info">
             <div class="movie-title">${m.title}</div>
             <button class="btn fav-btn remove" 
