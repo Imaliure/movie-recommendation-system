@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def convert_csv_to_json(csv_path="../data/imdb_top_1000.csv", json_path="imdb_data.json"):
+def convert_csv_to_json(csv_path="../data/imdb_top_1000.csv", json_path="../data/imdb_data.json"):
     df = pd.read_csv(csv_path)
 
     movies = []

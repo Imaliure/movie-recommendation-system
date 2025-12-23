@@ -12,7 +12,7 @@ app.add_middleware(
 )
 
 # JSON verisini yükle
-with open("imdb_data.json", "r", encoding="utf-8") as f:
+with open("../data/imdb_data.json", "r", encoding="utf-8") as f:
     movies = json.load(f)
 
 # Filmleri ID'ye göre sırala
