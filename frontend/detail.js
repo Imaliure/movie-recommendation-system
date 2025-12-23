@@ -75,6 +75,8 @@ async function loadSimilarMovies(genres) {
 
 // ✅ SADECE BUTONU GÜNCELLER
 function updateFavoriteButton() {
+    favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
     const isFav = favorites.includes(Number(movieId));
     const btn = document.querySelector(".fav-btn");
 
@@ -87,6 +89,7 @@ function updateFavoriteButton() {
     `;
 }
 
+
 function toggleFavorite(id) {
     if (favorites.includes(id)) {
         favorites = favorites.filter(f => f !== id);
@@ -98,4 +101,14 @@ function toggleFavorite(id) {
     updateFavoriteButton(); // 🔥 ARTIK BENZERLER DEĞİŞMEZ
 }
 
+window.addEventListener("pageshow", function () {
+    // localStorage'dan HER ZAMAN güncel favorileri al
+    favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    // butonu tekrar senkronla
+    updateFavoriteButton();
+});
+
+
 loadMovieDetail();
+

@@ -1,60 +1,41 @@
 const API_URL = "https://movie-recommendation-system-1-9dq3.onrender.com";
-const params = new URLSearchParams(window.location.search);
-const movieId = params.get("id");
-
-// Değişkeni "let" ile tanımlıyoruz ki güncelleyebilelim
 let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 
-async function loadMovieDetail() {
-    const res = await fetch(`${API_URL}/movies/${movieId}`);
-    const movie = await res.json();
-    
-    // Favori durumunu her seferinde güncel listeden kontrol et
-    const isFav = favorites.includes(movie.id);
-
-    document.getElementById("movie-detail").innerHTML = `
-        <div class="detail-container">
-            <img src="${movie.poster}" class="detail-poster" onerror="this.src='no-image.png';">
-            <div class="detail-content">
-                <h1>${movie.title}</h1>
-                <div class="detail-meta">
-                    <span><i class="fas fa-calendar"></i> ${movie.year}</span>
-                    <span><i class="fas fa-star" style="color:gold"></i> ${movie.rating}</span>
-                    <span><i class="fas fa-film"></i> ${movie.genres.join(", ")}</span>
-                </div>
-                <p class="overview">${movie.overview}</p>
-                
-                <button class="btn fav-btn ${isFav ? 'remove' : ''}" 
-                    onclick="toggleFavorite(${movie.id})"
-                    style="${isFav ? 'background-color: #444;' : ''}">
-                    <i class="fas ${isFav ? 'fa-heart-broken' : 'fa-heart'}"></i>
-                    ${isFav ? "Favorilerden Çıkar" : "Favorilere Ekle"}
-                </button>
-            </div>
-        </div>
-    `;
-    loadSimilarMovies(movie.genres[0]);
-}
-
-// Favori ekleme/çıkarma fonksiyonu
-function toggleFavorite(id) {
-    // Güncel listeyi al
-    favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    
-    if (favorites.includes(id)) {
-        favorites = favorites.filter(f => f !== id);
-    } else {
-        favorites.push(id);
+async function loadFavorites() {
+    const listDiv = document.getElementById("favorite-list");
+    if (favorites.length === 0) {
+        listDiv.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; font-size: 1.2rem; margin-top: 50px;">Henüz favori film eklemediniz.</p>`;
+        return;
     }
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    loadMovieDetail(); // UI'ı güncelle
+
+    let html = "";
+    for (let id of favorites) {
+        const res = await fetch(`${API_URL}/movies/${id}`);
+        const m = await res.json();
+        html += `
+            <div class="movie-card">
+        <img src="${m.poster}" onclick="location.href='detail.html?id=${m.id}'" style="cursor:pointer" onerror="this.src='no-image.png';">
+        <div class="movie-info">
+            <div class="movie-title">${m.title}</div>
+            <button class="btn fav-btn remove" 
+                onclick="removeFavorite(${m.id})" 
+                onmouseover="this.style.backgroundColor='#ff4d4d'; this.style.color='white'; this.style.borderColor='#ff4d4d'" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ff4d4d'; this.style.borderColor='#ff4d4d'"
+                onmousedown="this.style.backgroundColor='#b30000'"
+                onmouseup="this.style.backgroundColor='#ff4d4d'"
+                style="padding: 5px; font-size: 0.8rem; border: 1px solid #ff4d4d; color: #ff4d4d; background: transparent; transition: 0.3s; width: 100%;">
+                <i class="fas fa-trash"></i> Kaldır
+            </button>
+        </div>
+    </div>
+        `;
+    }
+    listDiv.innerHTML = html;
 }
 
-// 1. Sayfa ilk açıldığında çalıştır
-loadMovieDetail();
-
-// 2. Geri gelindiğinde çalıştır (Sorunu çözen kısım)
-window.addEventListener('pageshow', (event) => {
-    favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    loadMovieDetail();
-});
+function removeFavorite(id) {
+    favorites = favorites.filter(f => f !== id);
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    loadFavorites();
+}
+loadFavorites();
