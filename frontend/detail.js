@@ -35,6 +35,7 @@ async function loadMovieDetail() {
 async function loadSimilarMovies(genres) {
     let allMovies = [];
 
+    // Tüm türler için API çağrısı yap
     for (let g of genres) {
         const res = await fetch(`${API_URL}/genre/${encodeURIComponent(g)}`);
         const data = await res.json();
@@ -43,6 +44,7 @@ async function loadSimilarMovies(genres) {
 
     const scoreMap = {};
 
+    // Benzerlik skorlarını hesapla
     for (let m of allMovies) {
         if (m.id == movieId) continue;
 
@@ -53,20 +55,22 @@ async function loadSimilarMovies(genres) {
         }
     }
 
+    // Skora göre sırala ama objeyi (movie + score) koru
     const sortedByScore = Object.values(scoreMap)
-        .sort((a, b) => b.score - a.score)
-        .map(item => item.movie);
+        .sort((a, b) => b.score - a.score);
 
-    const top15 = sortedByScore.slice(0, 20);
-    const shuffled = top15.sort(() => 0.5 - Math.random());
+    // İlk 20 tanesini al, içinden karıştırıp 10 tane seç (Dinamiklik için)
+    const top20 = sortedByScore.slice(0, 20);
+    const shuffled = top20.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 10);
 
-    const html = selected.map(m => `
-        <div class="movie-card" onclick="location.href='detail.html?id=${m.id}'">
-            <div class="similarity-badge">${item.score} Ortak Tür</div> <!-- Şeffaflık için skor gösterimi -->
-            <img src="${m.poster}" onerror="this.src='no-image.png';">
+    const html = selected.map(item => `
+        <div class="movie-card" onclick="location.href='detail.html?id=${item.movie.id}'">
+            <!-- Şeffaflık Rozeti: Skor bilgisini buradan çekiyoruz -->
+            <div class="similarity-badge">${item.score} Ortak Tür</div> 
+            <img src="${item.movie.poster}" onerror="this.src='no-image.png';">
             <div class="movie-info">
-                <div class="movie-title">${m.title}</div>
+                <div class="movie-title">${item.movie.title}</div>
             </div>
         </div>
     `).join('');
@@ -74,13 +78,10 @@ async function loadSimilarMovies(genres) {
     document.getElementById("similar-movies").innerHTML = html;
 }
 
-// ✅ SADECE BUTONU GÜNCELLER
 function updateFavoriteButton() {
     favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
     const isFav = favorites.includes(Number(movieId));
     const btn = document.querySelector(".fav-btn");
-
     if (!btn) return;
 
     btn.classList.toggle("remove", isFav);
@@ -90,7 +91,6 @@ function updateFavoriteButton() {
     `;
 }
 
-
 function toggleFavorite(id) {
     if (favorites.includes(id)) {
         favorites = favorites.filter(f => f !== id);
@@ -98,18 +98,12 @@ function toggleFavorite(id) {
         favorites.push(id);
     }
     localStorage.setItem("favorites", JSON.stringify(favorites));
-
-    updateFavoriteButton(); // 🔥 ARTIK BENZERLER DEĞİŞMEZ
+    updateFavoriteButton();
 }
 
 window.addEventListener("pageshow", function () {
-    // localStorage'dan HER ZAMAN güncel favorileri al
     favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
-    // butonu tekrar senkronla
     updateFavoriteButton();
 });
 
-
 loadMovieDetail();
-
