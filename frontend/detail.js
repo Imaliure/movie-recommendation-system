@@ -66,7 +66,6 @@ async function loadSimilarMovies(genres) {
             <div class="similarity-badge">${item.score} Ortak Tür</div> <!-- Şeffaflık için skor gösterimi -->
             <img src="${m.poster}" onerror="this.src='no-image.png';">
             <div class="movie-info">
-            <div class="movie-info">
                 <div class="movie-title">${m.title}</div>
             </div>
         </div>
