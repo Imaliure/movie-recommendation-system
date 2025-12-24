@@ -61,11 +61,12 @@ async function loadSimilarMovies(genres) {
     const shuffled = top15.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 10);
 
-    const html = selected.map(m => `
-        <div class="movie-card" onclick="location.href='detail.html?id=${m.id}'">
-            <img src="${m.poster}" onerror="this.src='no-image.png';">
+    const html = selected.map(item => `
+        <div class="movie-card" onclick="location.href='detail.html?id=${item.movie.id}'">
+            <div class="similarity-badge">${item.score} Ortak Tür</div> <!-- Şeffaflık için skor gösterimi -->
+            <img src="${item.movie.poster}" onerror="this.src='no-image.png';">
             <div class="movie-info">
-                <div class="movie-title">${m.title}</div>
+                <div class="movie-title">${item.movie.title}</div>
             </div>
         </div>
     `).join('');
