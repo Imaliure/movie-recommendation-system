@@ -16,11 +16,11 @@ Proje üç ana klasörden oluşmaktadır:
 ├── backend             # FastAPI Sunucusu ve API İşlemleri
 │   ├── main.py         # API ana giriş noktası
 │   ├── data_loader.py  # CSV'den JSON'a veri dönüştürücü (Bilgi amaçlı)
-│   ├── imdb_data.json  # API'nin kullandığı işlenmiş veri seti
 │   └── requirements.txt# Gerekli Python kütüphaneleri
 │
 ├── data                # Ham Veri Kaynağı
-│   └── imdb_top_1000.csv # Orijinal veri seti
+│   ├── imdb_top_1000.csv # Orijinal veri seti
+│   └── imdb_data.json  # API'nin kullandığı işlenmiş veri seti
 │
 ├── frontend            # Kullanıcı Arayüzü (Vercel'de Deploy Edilmiştir)
 │   ├── index.html      # Ana Sayfa
