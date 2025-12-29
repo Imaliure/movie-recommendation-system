@@ -19,13 +19,8 @@ Proje üç ana klasörden oluşmaktadır:
 │   └── requirements.txt# Gerekli Python kütüphaneleri
 │
 ├── data                # Ham Veri Kaynağı
-<<<<<<< HEAD
 │   ├── imdb_data.json  # API'nin kullandığı işlenmiş veri seti
 │   └── imdb_top_1000.csv # Orijinal veri seti
-=======
-│   ├── imdb_top_1000.csv # Orijinal veri seti
-│   └── imdb_data.json  # API'nin kullandığı işlenmiş veri seti
->>>>>>> 77433ab667ceb92651674d8c3de0e2efe105dc59
 │
 ├── frontend            # Kullanıcı Arayüzü (Vercel'de Deploy Edilmiştir)
 │   ├── index.html      # Ana Sayfa
